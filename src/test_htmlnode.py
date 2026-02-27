@@ -1,6 +1,7 @@
 import unittest
 
-from htmlnode import HTMLNode, LeafNode, ParentNode
+from htmlnode import HTMLNode, LeafNode, ParentNode, text_node_to_html_node
+from src.textnode import TextNode, TextType
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -70,29 +71,40 @@ class TestHTMLNode(unittest.TestCase):
         )
 
     def test_to_html_with_lots_of_children(self):
-            parent_node = ParentNode(
-                "div",
-                [
-                    ParentNode(
-                        "span",
-                        [
-                            ParentNode("em",[LeafNode("b", "grandchild")]),
-                            LeafNode("b", "grandchild")
-                        ]
-                    ),
-                    ParentNode(
-                        "span",
-                        [
-                            LeafNode("b", "grandchild"),
-                            ParentNode("em",[LeafNode("b", "grandchild")]),
-                        ]
-                    )
-                ]
-            )
-            self.assertEqual(
-                parent_node.to_html(),
-                "<div><span><em><b>grandchild</b></em><b>grandchild</b></span><span><b>grandchild</b><em><b>grandchild</b></em></span></div>",
-            )
+        parent_node = ParentNode(
+            "div",
+            [
+                ParentNode(
+                    "span",
+                    [
+                        ParentNode("em",[LeafNode("b", "grandchild")]),
+                        LeafNode("b", "grandchild")
+                    ]
+                ),
+                ParentNode(
+                    "span",
+                    [
+                        LeafNode("b", "grandchild"),
+                        ParentNode("em",[LeafNode("b", "grandchild")]),
+                    ]
+                )
+            ]
+        )
+        self.assertEqual(
+            parent_node.to_html(),
+            "<div><span><em><b>grandchild</b></em><b>grandchild</b></span><span><b>grandchild</b><em><b>grandchild</b></em></span></div>",
+        )
+
+    def test_text(self):
+        node = TextNode("This is a text node", TextType.TEXT)
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.tag, None)
+        self.assertEqual(html_node.value, "This is a text node")
+
+    def test_text_to_link(self):
+        node = TextNode("This is a text node", TextType.LINK, "google.com")
+        html_node = text_node_to_html_node(node)
+        self.assertEqual(html_node.to_html(), '<a href="google.com">This is a text node</a>')
 
 if __name__ == "__main__":
     unittest.main()
