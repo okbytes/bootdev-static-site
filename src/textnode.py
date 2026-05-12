@@ -7,7 +7,7 @@ class TextType(Enum):
     ITALIC = "italic"
     CODE = "code"
     LINK = "link"
-    IMG = "img"
+    IMAGE = "image"
 
 
 class TextNode:
@@ -24,4 +24,7 @@ class TextNode:
         )
 
     def __repr__(self):
-        return f"TextNode({self.text}, {self.text_type}, {self.url})"
+        ans = f"{self.text}, {self.text_type}"
+        if self.url:
+            ans += f", {self.url}"
+        return f"TextNode({ans})"
