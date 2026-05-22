@@ -35,12 +35,13 @@ class LeafNode(HTMLNode):
             return self.value
         return f"<{self.tag}{self.props_to_html() if self.props else ''}>{self.value}</{self.tag}>"
 
+
 class ParentNode(HTMLNode):
     def __init__(self, tag, children, props=None):
         super().__init__(tag, None, children, props)
 
     def __repr__(self):
-      return f"ParentNode(tag={self.tag}, children={self.value}, props={self.props_to_html()})"
+        return f"ParentNode(tag={self.tag}, children={self.value}, props={self.props_to_html()})"
 
     def to_html(self):
         if not self.tag:
@@ -54,6 +55,7 @@ class ParentNode(HTMLNode):
         str += f"</{self.tag}>"
         return str
 
+
 def text_node_to_html_node(text_node: TextNode):
     match text_node.text_type:
         case TextType.TEXT:
@@ -66,18 +68,13 @@ def text_node_to_html_node(text_node: TextNode):
             return LeafNode(tag="code", value=text_node.text)
         case TextType.LINK:
             return LeafNode(
-                tag="a",
-                value=text_node.text,
-                props={ "href": text_node.url}
+                tag="a", value=text_node.text, props={"href": text_node.url}
             )
-        case TextType.IMG:
+        case TextType.IMAGE:
             return LeafNode(
                 tag="img",
                 value=None,
-                props={
-                    "src": text_node.url,
-                    "alt": text_node.text
-                }
+                props={"src": text_node.url, "alt": text_node.text},
             )
         case _:
             raise Exception("invalid text_type")
