@@ -1,6 +1,9 @@
 import re
 
-from src.textnode import TextNode, TextType
+try:
+    from .textnode import TextNode, TextType
+except ImportError:
+    from textnode import TextNode, TextType
 
 
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
