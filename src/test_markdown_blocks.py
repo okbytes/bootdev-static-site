@@ -1,6 +1,6 @@
 import unittest
 
-from src.block_markdown import BlockType, block_to_block_type, markdown_to_blocks
+from src.markdown_blocks import BlockType, block_to_block_type, markdown_to_blocks
 
 
 class TestInlineMarkdown(unittest.TestCase):
@@ -83,14 +83,14 @@ def ok():
 - flour
 - bread"""
         blocks = block_to_block_type(md)
-        self.assertEqual(blocks, BlockType.UNORDERED_LIST)
+        self.assertEqual(blocks, BlockType.ULIST)
 
     def test_block_to_blocktype_ordered(self):
         md = """1. Steal socks
 2. ???
 3. Profit"""
         blocks = block_to_block_type(md)
-        self.assertEqual(blocks, BlockType.ORDERED_LIST)
+        self.assertEqual(blocks, BlockType.OLIST)
 
     def test_block_to_blocktype_paragraph(self):
         blocks = block_to_block_type("####### Heading")
